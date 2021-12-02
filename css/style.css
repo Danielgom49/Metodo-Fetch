@@ -10,6 +10,31 @@ h1{
     padding:30px 20px;
     margin: 0;
 }
+select{
+    border-radius: 5px;
+    padding: 5px;
+    background-color:rgb(3, 87, 112);
+    color: white;
+}
+.api{
+    font-size:35px
+}
+.template{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.card{
+    border: 2px solid white;
+    border-radius:8px ;
+    background-color:rgb(3, 87, 112);
+    color:white;
+    margin: 20px;
+    padding: 20px;
+}
+.card p{
+    font-size: 20px;
+}
 .quote-card{
     font-size:20px;
 }

@@ -6,44 +6,58 @@ const templateCard = document.querySelector('#template-card').content;
 
 const fragment = document.createDocumentFragment();
 
-const btnGenerate = document.getElementById('btn-generate');
+const valor = document.getElementById('optionCharacter').value
 
-btnGenerate.addEventListener('click',FetchApi);
+const characters = document.getElementById('characters')
 
-function CreateCard(results) {
-    let select = document.createElement('select');
-    let option1 = document.createElement('option');
-    option1.setAttribute('value',"value")
-    let optionText1 = document.createTextNode(results[0].name)
+characters.addEventListener('change',CreateCard);
 
-    let option2 = document.createElement('option');
-    option2.setAttribute('value',"value")
-    let optionText2 = document.createTextNode(results[0].name)
-
-    option1.appendChild(optionText1)
-    option2.appendChild(optionText2)
-
-    select.appendChild(option1);
-    select.appendChild(option2);
-    characters.appendChild(select);
-
-
-
-
-    let cloneTemplate = document.importNode(templateCard,true);
-    cloneTemplate.querySelector('.name-card').textContent = rickAndMorty[0].character;
-    cloneTemplate.querySelector('.img-card').setAttribute('src',rickAndMorty[0].image);
-    cloneTemplate.querySelector('.img-card').setAttribute('alt',rickAndMorty[0].character);
-    cloneTemplate.querySelector('.quote-card').textContent = `Quote: ${rickAndMorty[0].quote}`;
-    fragment.appendChild(cloneTemplate);
-    mainCard.appendChild(fragment)
-}
-
+FetchApi()
 function FetchApi() {
     fetch(URL)
     .then(response => response.json())
-    .then(card=>{
-        mainCard.innerHTML = '';
-        CreateCard(card);
+    .then(data=>{
+        return data.results.map((card)=>{
+        // mainCard.innerHTML = '';
+        // CreateCard(card);
+        const option = document.createElement('option');
+        option.value=card.name;
+        option.textContent=card.name
+        option.setAttribute('id', card.id)
+        characters.appendChild(option);
+        return card
+        })
     })
 }
+
+
+
+
+
+function CreateCard() {
+    fetch(URL)
+    .then(response => response.json())
+    .then(data=>{
+        return data.results.map((results)=>{
+            console.log(results.id);
+            if (valor==='allCharacter') {
+                let cloneTemplate = document.importNode(templateCard,true);
+                cloneTemplate.querySelector('.img-card').setAttribute('src',results.image);
+                cloneTemplate.querySelector('.name-card').textContent = results.name;
+                cloneTemplate.querySelector('.gender-card').textContent = results.gender;
+                fragment.appendChild(cloneTemplate);
+                mainCard.appendChild(fragment)
+            }
+            if (results.id==='') {
+                let cloneTemplate = document.importNode(templateCard,true);
+                cloneTemplate.querySelector('.img-card').setAttribute('src',results.image);
+                cloneTemplate.querySelector('.name-card').textContent = results.name;
+                cloneTemplate.querySelector('.gender-card').textContent = results.gender;
+                fragment.appendChild(cloneTemplate);
+                mainCard.appendChild(fragment)
+            }
+        })
+    })
+   
+}
+
