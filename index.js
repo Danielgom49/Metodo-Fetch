@@ -6,21 +6,21 @@ const templateCard = document.querySelector('#template-card').content;
 
 const fragment = document.createDocumentFragment();
 
-const valor = document.getElementById('optionCharacter').value
-
-const characters = document.getElementById('characters')
+const characters = document.getElementById('characters');
 
 characters.addEventListener('change',CreateCard);
 
-FetchApi()
-function FetchApi() {
+let option;
+
+FetchApi(option)
+function FetchApi(option) {
     fetch(URL)
     .then(response => response.json())
     .then(data=>{
         return data.results.map((card)=>{
         // mainCard.innerHTML = '';
         // CreateCard(card);
-        const option = document.createElement('option');
+        option = document.createElement('option');
         option.value=card.name;
         option.textContent=card.name
         option.setAttribute('id', card.id)
@@ -32,15 +32,14 @@ function FetchApi() {
 
 
 
-
-
-function CreateCard() {
+function CreateCard(option) {
     fetch(URL)
     .then(response => response.json())
     .then(data=>{
         return data.results.map((results)=>{
-            console.log(results.id);
-            if (valor==='allCharacter') {
+            let id = option.target.value;
+            console.log(id);
+            if (id === 'allCharacters') {
                 let cloneTemplate = document.importNode(templateCard,true);
                 cloneTemplate.querySelector('.img-card').setAttribute('src',results.image);
                 cloneTemplate.querySelector('.name-card').textContent = results.name;
@@ -48,7 +47,8 @@ function CreateCard() {
                 fragment.appendChild(cloneTemplate);
                 mainCard.appendChild(fragment)
             }
-            if (results.id==='') {
+            if(results.name===id){
+                mainCard.innerHTML = '';
                 let cloneTemplate = document.importNode(templateCard,true);
                 cloneTemplate.querySelector('.img-card').setAttribute('src',results.image);
                 cloneTemplate.querySelector('.name-card').textContent = results.name;
@@ -56,6 +56,7 @@ function CreateCard() {
                 fragment.appendChild(cloneTemplate);
                 mainCard.appendChild(fragment)
             }
+           
         })
     })
    
